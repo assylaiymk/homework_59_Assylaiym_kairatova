@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, BaseValidator
 
-from webapp.models import Task
+from webapp.models import Task, Project
 
 
 def max_length_validator(string):
@@ -36,8 +36,20 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ('title', 'description', 'types', 'statuses')
 
-    def clean_tite(self):
-        title = self.cleaned_data('title')
-        if len(title) < 2:
-            raise ValidationError('Title should be longer than 2')
-        return title
+
+class ProjectForm(forms.ModelForm):
+    title = forms.CharField(max_length=100,
+                            label='Title',
+                            validators=(
+                                MinLengthValidator(limit_value=2, message=''),
+                                CustomLengthValidator(limit_value=30),
+                                )
+                            )
+
+    class Meta:
+        model = Project
+        fields = ('title', 'description', 'task')
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=100, required=False, label='Find')

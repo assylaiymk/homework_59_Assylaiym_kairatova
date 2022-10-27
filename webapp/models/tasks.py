@@ -11,9 +11,9 @@ class Task(models.Model):
     updated_at = models.DateTimeField(verbose_name='Date updated', auto_now=True)
     deleted_at = models.DateTimeField(verbose_name='Date deleted', null=True, default=None)
     types = models.ManyToManyField(to='webapp.Type', verbose_name='Type',
-                                   related_name='types', blank=True)
+                                   related_name='types', blank=False)
     statuses = models.ManyToManyField(to='webapp.Status', verbose_name='Status',
-                                      related_name='statuses', blank=True)
+                                      related_name='statuses', blank=False)
 
     def __str__(self):
         return f'{self.title} - {self.description}'
